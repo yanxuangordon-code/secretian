@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secretian</title>
+<style>
+  :root {
+    --bg: #0f1220;
+    --card: #181c30;
+    --border: #2a3050;
+    --text: #e8ebf7;
+    --muted: #8d95b8;
+    --accent: #7c8cff;
+    --accent-2: #5ee0b0;
+    --error: #ff8a8a;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(1200px 600px at 20% -10%, #1d2350 0%, var(--bg) 60%);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  main { width: 100%; max-width: 760px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  h1 { margin: 0 0 4px; font-size: 1.8rem; letter-spacing: -0.02em; }
+  .sub { margin: 0 0 24px; color: var(--muted); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--muted); }
+  input[type="password"], textarea {
+    width: 100%;
+    background: #0f1327;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font: inherit;
+  }
+  textarea { min-height: 140px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    font: inherit;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: #20264a;
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #0b0e1f; }
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .modes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0b0e1f; }
+  .hint { color: var(--muted); font-size: 0.85rem; margin: 8px 0 12px; }
+  .status { min-height: 1.4em; color: var(--accent-2); font-size: 0.9rem; margin-top: 8px; }
+  .error { min-height: 1.4em; color: var(--error); font-size: 0.9rem; margin-top: 8px; }
+  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  footer { color: var(--muted); font-size: 0.82rem; margin-top: 24px; }
+  .gate { align-items: center; }
+  .gate-card { width: 100%; max-width: 420px; margin: 0 auto; }
+  .gate-card h2 { margin: 0 0 4px; }
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate" role="dialog" aria-labelledby="gate-title" hidden>
+  <form id="gate-form" class="card gate-card" autocomplete="off">
+    <h2 id="gate-title">Enter the passkey</h2>
+    <p class="hint">Only people with the passkey can use this. You'll only be asked once on this device.</p>
+    <input id="passkey" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Passkey" placeholder="Passkey">
+    <div class="actions">
+      <button type="submit" class="primary">Unlock</button>
+      <button type="button" id="show">Show</button>
+    </div>
+    <div class="error" id="gate-error" role="alert"></div>
+  </form>
+</div>
+
+<main id="app" hidden>
+  <div class="top">
+    <div>
+      <h1>Secretian</h1>
+      <p class="sub">Turn normal English into a secret language, and back again.</p>
+    </div>
+    <button id="lock" type="button" title="Forget the passkey on this device">Lock</button>
+  </div>
+
+  <div class="modes" role="group" aria-label="Direction">
+    <button id="m-enc" type="button" aria-pressed="true">English → Secret</button>
+    <button id="m-dec" type="button" aria-pressed="false">Secret → English</button>
+  </div>
+
+  <section class="card">
+    <label for="in" id="in-label">Your message</label>
+    <textarea id="in" spellcheck="false" placeholder="Type or paste your message here"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="out" id="out-label">Secret version</label>
+    <textarea id="out" readonly></textarea>
+    <div class="actions">
+      <button id="copy" type="button">Copy</button>
+      <button id="swap" type="button">Use as input &amp; flip direction</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <footer>
+    Every word in the dictionary (plus lots of gaming words and names) is swapped for a different word. Anything not in the word list, like numbers or very new slang, is left unchanged. Everything runs in your browser; nothing is sent anywhere.
+  </footer>
+</main>
+
+<script>
+/*CORE*/
+</script>
+<script>
+const WORDS = "/*WORDS*/".split(" ");
+const GATE_HASH = "/*GATE*/";
+const STORE_KEY = "sw_passkey";
+
+const $ = (id) => document.getElementById(id);
+const inEl = $("in"), outEl = $("out"), statusEl = $("status");
+let mode = "enc";
+let passkey = null;
+let cache = { pass: null, maps: null };
+let timer = null;
+
+function readStored() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
+function writeStored(v) {
+  try {
+    if (v === null) localStorage.removeItem(STORE_KEY); else localStorage.setItem(STORE_KEY, v);
+  } catch (e) { /* private mode: the passkey just won't be remembered */ }
+}
+function isValid(pass) { return SecretWords.verifier(pass) === GATE_HASH; }
+
+function getMaps(pass) {
+  if (cache.pass !== pass) cache = { pass: pass, maps: SecretWords.buildMaps(WORDS, pass) };
+  return cache.maps;
+}
+
+function run() {
+  if (!passkey) return;
+  statusEl.textContent = "Working…";
+  // Let the browser paint "Working…" before the heavy first-time setup.
+  setTimeout(function () {
+    if (!passkey) return;
+    const maps = getMaps(passkey);
+    outEl.value = SecretWords.translate(inEl.value, mode === "enc" ? maps.enc : maps.dec);
+    statusEl.textContent = "";
+  }, 20);
+}
+
+function schedule() {
+  clearTimeout(timer);
+  timer = setTimeout(run, 250);
+}
+
+function setMode(m) {
+  mode = m;
+  $("m-enc").setAttribute("aria-pressed", m === "enc");
+  $("m-dec").setAttribute("aria-pressed", m === "dec");
+  $("in-label").textContent = m === "enc" ? "Your message" : "Secret message";
+  $("out-label").textContent = m === "enc" ? "Secret version" : "Decoded message";
+  run();
+}
+
+function showApp(pass) {
+  passkey = pass;
+  $("gate").hidden = true;
+  $("app").hidden = false;
+  run();
+}
+
+function showGate() {
+  passkey = null;
+  cache = { pass: null, maps: null };
+  inEl.value = "";
+  outEl.value = "";
+  $("app").hidden = true;
+  $("gate").hidden = false;
+  $("passkey").value = "";
+  $("gate-error").textContent = "";
+  $("passkey").focus();
+}
+
+$("gate-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const attempt = $("passkey").value.trim();
+  $("gate-error").textContent = "Checking…";
+  setTimeout(function () {
+    if (attempt && isValid(attempt)) {
+      writeStored(attempt);
+      showApp(attempt);
+    } else {
+      $("gate-error").textContent = "Wrong passkey (you typed " + attempt.length + " characters). Tap Show to check spelling, all lowercase, no spaces.";
+      $("passkey").select();
+    }
+  }, 20);
+});
+
+$("show").addEventListener("click", function () {
+  const hidden = $("passkey").type === "password";
+  $("passkey").type = hidden ? "text" : "password";
+  this.textContent = hidden ? "Hide" : "Show";
+});
+
+$("lock").addEventListener("click", function () {
+  writeStored(null);
+  showGate();
+});
+
+inEl.addEventListener("input", schedule);
+$("m-enc").addEventListener("click", () => setMode("enc"));
+$("m-dec").addEventListener("click", () => setMode("dec"));
+$("copy").addEventListener("click", async function () {
+  try {
+    await navigator.clipboard.writeText(outEl.value);
+    statusEl.textContent = "Copied!";
+  } catch (e) {
+    outEl.select();
+    statusEl.textContent = "Press Ctrl/Cmd + C to copy.";
+  }
+});
+$("swap").addEventListener("click", function () {
+  inEl.value = outEl.value;
+  setMode(mode === "enc" ? "dec" : "enc");
+});
+
+// First visit: ask for the passkey. After that, the saved one is used automatically.
+const saved = readStored();
+if (saved && isValid(saved)) showApp(saved); else showGate();
+</script>
+</body>
+</html>
