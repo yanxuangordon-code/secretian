@@ -1,0 +1,89 @@
+# Extra words added to the dictionary. Lines starting with # are ignored.
+# Anything that isn't a letter is treated as a separator, and everything is lowercased.
+
+# single letters and everyday chat words the base dictionary lacks
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+ok okay lol omg im ive dont cant wont thats youre theyre pls plz thx ty np idk imo tbh ngl fr rn btw wtf wth smh
+bruh bro bruv fam yo yoo yeah yep yup nope nah aight ight lmao lmfao rofl xd gg ez ggez wp gl hf glhf afk brb gtg ttyl
+sus imposter rizz skibidi sigma cringe based mid npc goated cooked cook ratio ratioed fax cap nocap vibe vibes lowkey highkey
+wifi youtube tiktok instagram snapchat whatsapp telegram reddit twitter
+
+# Roblox
+roblox robloxian robux blox bloxburg bloxy brookhaven jailbreak arsenal doors adopt pet simulator
+tycoon obby obbies mm murder mystery tower hell royale high blade ball grow garden brainrot steal
+avatar emote emotes skin skins cosmetic accessory hat hats gamepass gamepasses premium
+lobby server servers private public ps vip trade trading trader scam scammer scammed scamming
+admin mod mods moderator ban banned unban kick kicked exploit exploits exploiter exploiters hacker hackers hacking script scripts
+lag laggy ping fps glitch glitched bug bugged patch update updates nerf nerfed buff buffed meta op overpowered broken
+noob noobs pro sweaty tryhard tryhards smurf newbie veteran grind grinding grinder farm farming farmer afk
+spawn spawned respawn loot drop drops quest quests dungeon dungeons boss bosses mob mobs npc npcs cooldown stun stunned combo combos
+carry carried feed feeder toxic tilt rank ranked elo mmr leaderboard ult ultimate clan clans guild crew crews team teammate teammates
+stream streamer streamers youtuber youtubers clip clips
+
+# Blox Fruits
+bf bloxfruits fruit fruits beli fragments fragment awakening awakened awaken haki observation armament conqueror
+kitsune kitsuni leopard dragon dough buddha venom shadow control spirit trex mammoth gravity blizzard portal phoenix sound
+spider love quake magma ghost rubber light diamond dark sand ice flame smoke gas yeti eagle falcon spin kilo spring spike chop bomb rumble paw barrier revive
+mythical legendary rare uncommon common physical
+sword swords katana katanas cdk yama tushita shisui saddi wando rengoku saber pole koko dragonstorm bisento canvander
+triple dual cursed blade dagger daggers scythe hallow trident gun cannon
+fighting style styles superhuman sharkman electric claw talon death step godhuman sanguine art karate dragonbreath
+race races human mink skypian angel cyborg ghoul draco shark fishman v v trial trials
+sea beast leviathan terrorshark piranha brig sloop ship boat boats event events raid raids dungeon mirage island
+kingdom rose usoap marineford skypiea hydra castle haunted floating turtle tiki outpost treats cake land port town mansion temple time
+dough king prince queen tyrant skies darkbeard order captain soul reaper greybeard gorilla warden chief swan admiral thunder god wysper
+indra rip stone empress elephant longma fajita tidekeeper
+pirate pirates marine marines bounty honor devil pvp pve
+valkyrie helm mirror fractal fragment candy chalice bisento
+godhuman cdk sgt
+
+# other games and platforms
+minecraft fortnite valorant genshin impact among gta pubg cod apex overwatch dota csgo steam xbox playstation nintendo switch
+twitch discord nitro dm dms vc vcs ping pings mute muted stream streams server channel channels emoji emojis sticker stickers bot bots
+anime manga otaku senpai sensei kouhai kawaii sugoi baka nani yabai ikuzo
+naruto sasuke sakura kakashi itachi madara luffy zoro sanji nami usopp ace sabo goku vegeta gohan tanjiro nezuko zenitsu inosuke
+deku bakugo todoroki gojo sukuna itadori yuji megumi levi eren mikasa armin
+
+# Japanese culture words
+kitsune tanuki tengu kappa oni yokai yurei ninja shinobi samurai ronin shogun daimyo bushido dojo kunai shuriken nunchaku wakizashi tanto naginata ninjato nodachi tessen
+kimono yukata haori geta sakura matcha sushi ramen onigiri takoyaki mochi boba udon tempura tonkatsu yakitori
+arigato arigatou konnichiwa sayonara oyasumi ohayo gomen sumimasen hai iie daijoubu itadakimasu kampai banzai
+# Korean words
+annyeong annyeonghaseyo saranghae daebak oppa unnie hyung noona kamsahamnida gamsahamnida aigoo hwaiting kimchi bulgogi bibimbap tteokbokki soju
+
+# Japanese given names
+haruto yuto sota riku ren minato itsuki yamato asahi kaito haruki souta daiki shota ryo ryota ryota naoki yuki kenji takeshi hiroshi akira satoshi kenta kazuki taro jiro hikaru shin shun sho sora tatsuya tomoya masato makoto kei kou koji koichi kenta kento kenshin takumi tsubasa yusuke yuya hayato hideo jun junpei katsu keita naoto noboru osamu ryu ryuji seiji shinji shingo tadashi taiga takashi toru tsuyoshi yoshi yoshiki
+hinata yui aoi mio himari akari yuna saki nanami misaki ayaka haruka natsuki hana rin mei sakura miyu momoka ichika kokoro tsumugi ema riko rina rika risa mai maki mayu mika miki miyuki nao naomi nozomi reina reiko sachiko satsuki shiori sumire suzu tomoe yoko yumi yuri yuka yukina chiyo emi fumi haru hikari honoka kaede kanna kasumi kaori kyoko megumi midori mina minami misato mitsuki natsumi noa
+# Japanese surnames
+tanaka suzuki sato takahashi watanabe ito yamamoto nakamura kobayashi kato yoshida yamada sasaki matsumoto inoue kimura hayashi shimizu yamaguchi saito mori ikeda hashimoto abe ishikawa ogawa goto okada hasegawa fujita murakami kondo ishii sakamoto endo aoki fujii nishimura fukuda ota miura takeuchi nakajima okamoto matsuda harada nakano maeda fujiwara ono kojima uchida nagai tamura iwasaki uehara sugiyama konishi taniguchi
+
+# Korean given names
+minjun seojun doyun haneul jiho junseo hyunwoo jihoon taehyung jungkook jimin yoongi namjoon seokjin hoseok chanyeol baekhyun minho jisoo jennie lisa rose seoyeon soyeon jiwoo eunji hyejin sooyoung dahyun nayeon momo sana tzuyu chaeyoung minseok sungmin donghyun jaehyun jaemin jeno haechan renjun chenle mark yeonjun soobin beomgyu taehyun hueningkai seungmin felix hyunjin changbin jisung han bangchan woojin wonwoo mingyu seungkwan vernon dino joshua jun hoshi dk seungcheol jeonghan junhui dokyeom
+yunho mingi seonghwa hongjoong yeosang wooyoung jongho sunwoo younghoon juyeon kevin jacob hyunjae eric chanhee haknyeon seoyoung jiyeon sujin minji hanni danielle haerin hyein yujin wonyoung rei liz gaeul leeseo
+# Korean surnames
+kim lee park choi jung kang cho yoon jang lim han oh seo shin kwon hwang ahn song yoo hong jeon moon bae baek nam ryu
+
+# Chinese given names and surnames
+wei li wang zhang liu chen yang huang zhao wu zhou xu sun ma zhu hu guo lin he gao luo zheng liang xie tang feng deng cao peng zeng xiao tian dong pan yuan cai jiang yu du ye cheng su lu ding ren shen yao
+xiaoming xiaohua meilin jiahui zhiwei jiawei junjie jinglei haoran yuxuan zihan ziyi yifan hongwei jianhua minghui weiming yiming zekai kaixin shuhui xinyi huiying meixin peiling lihua jiayi jiaxin ruoxi siyuan tianyi xinyu yuting zhiyuan
+# Malay
+ahmad muhammad mohamed mohd hafiz aiman irfan danial syafiq amir amirul farhan fikri haziq iqbal izzat naufal qayyum rayyan zafran zikri aisyah farah nurul siti nur aini alya balqis damia dania hanis husna insyirah liyana maisarah nabilah qistina sofea syafiqah wani zulaikha
+# Indian
+arjun aarav vivaan aditya rohan rahul vikram karan ishaan sai krishna rajesh suresh ramesh amit anil sanjay deepak vijay manoj priya ananya diya aanya kavya neha pooja shreya sneha anjali divya meera nisha riya sana tanvi
+patel sharma singh kumar gupta reddy nair iyer menon pillai das shah mehta kapoor khan
+# Arabic / Middle Eastern
+ahmed ali omar hassan hussein yusuf youssef ibrahim khalid karim tariq zayd bilal hamza mustafa mahmoud fatima aisha layla zainab noor hana mariam amina yasmin salma leila samira
+# Western
+liam noah oliver james elijah william henry lucas benjamin theodore jack levi alexander mason ethan daniel jacob michael logan jackson sebastian aiden matthew samuel david joseph carter owen wyatt john luke dylan grayson isaac jayden anthony gabriel julian lincoln joshua christopher andrew nathan ryan thomas leo hunter connor jordan cameron tyler brandon kyle evan austin justin adam aaron
+emma olivia charlotte amelia sophia isabella mia evelyn harper luna camila gianna elizabeth eleanor ella abigail sofia avery scarlett emily aria penelope chloe layla mila nora hazel madison ellie lily nova isla grace violet aurora riley zoey willow emilia stella zoe victoria hannah addison leah lucy eliana ivy everly lillian paisley elena naomi maya natalia kennedy sarah jessica ashley amanda brittany megan taylor
+smith johnson williams brown jones garcia miller davis rodriguez martinez hernandez lopez gonzalez wilson anderson moore martin jackson thompson white harris clark lewis robinson walker young allen king wright scott torres nguyen hill flores green adams nelson baker hall rivera campbell mitchell carter roberts
+# Spanish / Latin
+mateo santiago diego carlos miguel javier alejandro andres pablo fernando ricardo rafael sergio manuel jorge luis juan jose pedro joao gabriel thiago matheus valentina lucia maria carmen isabel rosa ana paula marta beatriz carolina juliana fernanda
+# French / German / Italian / other European
+pierre louis hugo jean jules antoine mathieu lukas jonas finn felix leon paul max elias matteo francesco giuseppe marco luca alessandro lorenzo giulia chiara francesca sara elisa greta anna lena hanna emilie camille manon chloe
+# Russian / Slavic
+ivan dmitri dmitry alexei alexey nikolai sergei sergey vladimir yuri andrei boris igor oleg viktor natasha olga anastasia svetlana tatiana irina katya masha sasha
+# African
+kwame amara chidi zuri kofi nia ayo bisi emeka femi ngozi obi sade tunde adaeze chinedu folake kelechi nneka temi
+# Vietnamese / Thai / Filipino
+tran pham hoang phan vu dang bui minh anh linh huong lan mai thao trang hung nam duc long khoa somchai somsak ploy nong angelo josephine dela cruz santos reyes ramos
