@@ -3,137 +3,264 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E1020">
+<meta name="description" content="Write messages in your group's secret language, and read ones your friends send you.">
 <title>Secretian</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23B7A6FF'/%3E%3Ccircle cx='12' cy='10' r='3.4' fill='%230E1020'/%3E%3Cpath d='M10.4 12.2h3.2l1.2 6.3H9.2z' fill='%230E1020'/%3E%3C/svg%3E">
 <style>
+  @font-face { font-family: "Unbounded"; src: url(data:font/woff2;base64,/*FONT_DISPLAY*/) format("woff2"); font-weight: 200 900; font-style: normal; }
+  @font-face { font-family: "Figtree"; src: url(data:font/woff2;base64,/*FONT_BODY*/) format("woff2"); font-weight: 300 900; font-style: normal; }
+
   :root {
-    --bg: #0f1220;
-    --card: #181c30;
-    --border: #2a3050;
-    --text: #e8ebf7;
-    --muted: #8d95b8;
-    --accent: #7c8cff;
-    --accent-2: #5ee0b0;
-    --error: #ff8a8a;
+    --abyss: #0E1020;
+    --deep: #161936;
+    --ink: #1A1840;
+    --ink-line: #34307A;
+    --glass: #E4EFEC;
+    --glass-line: #BCD3CE;
+    --haki: #B7A6FF;
+    --haki-deep: #8B6CFF;
+    --beli: #FFC857;
+    --coral: #FF7B7B;
+    --text: #ECEAFB;
+    --muted: #9C98C7;
+    --display: "Unbounded", ui-rounded, "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
     min-height: 100vh;
-    background: radial-gradient(1200px 600px at 20% -10%, #1d2350 0%, var(--bg) 60%);
+    background: var(--abyss);
     color: var(--text);
-    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 32px 16px;
+    font: 16px/1.5 var(--body);
   }
-  main { width: 100%; max-width: 760px; }
-  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-  h1 { margin: 0 0 4px; font-size: 1.8rem; letter-spacing: -0.02em; }
-  .sub { margin: 0 0 24px; color: var(--muted); }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+  button { font-family: var(--display); cursor: pointer; }
+  button:disabled { opacity: 0.55; cursor: progress; }
+
+  /* ---------- Passkey screen ---------- */
+  .gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .gate-card {
+    width: 100%; max-width: 420px;
+    background: var(--ink); border: 1px solid var(--ink-line); border-radius: 26px;
+    padding: 30px 26px 26px;
   }
-  label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--muted); }
-  input[type="password"], textarea {
-    width: 100%;
-    background: #0f1327;
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    font: inherit;
+  .gate-card h2 { font: 600 1.25rem/1.25 var(--display); letter-spacing: -0.01em; margin: 18px 0 8px; }
+  .gate-card p { margin: 0 0 18px; color: var(--muted); }
+  .gate-card input {
+    width: 100%; background: var(--abyss); color: var(--text);
+    border: 1px solid var(--ink-line); border-radius: 14px; padding: 14px 16px; font: inherit; font-size: 1.05rem;
   }
-  textarea { min-height: 140px; resize: vertical; }
-  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  button {
-    font: inherit;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    background: #20264a;
-    color: var(--text);
-    border-radius: 10px;
-    padding: 10px 16px;
-    cursor: pointer;
+  .gate-card input:focus-visible { outline: 3px solid var(--haki-deep); outline-offset: 2px; }
+  .gate-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .error { min-height: 1.5em; color: var(--coral); font-size: 0.92rem; margin-top: 12px; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    min-height: 44px; padding: 0 22px; border-radius: 999px;
+    font-weight: 500; font-size: 0.82rem; letter-spacing: -0.005em;
+    border: 1px solid var(--ink-line); background: transparent; color: var(--text);
+    transition: background-color 0.15s, border-color 0.15s;
   }
-  button:hover { border-color: var(--accent); }
-  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  button.primary { background: var(--accent); border-color: var(--accent); color: #0b0e1f; }
-  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-  .modes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0b0e1f; }
-  .hint { color: var(--muted); font-size: 0.85rem; margin: 8px 0 12px; }
-  .status { min-height: 1.4em; color: var(--accent-2); font-size: 0.9rem; margin-top: 8px; }
-  .error { min-height: 1.4em; color: var(--error); font-size: 0.9rem; margin-top: 8px; }
-  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  footer { color: var(--muted); font-size: 0.82rem; margin-top: 24px; }
-  .drop-active { outline: 2px dashed var(--accent); outline-offset: 4px; }
-  .thumb { display: block; max-width: 100%; max-height: 220px; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); }
-  .img-status { min-height: 1.4em; color: var(--accent-2); font-size: 0.9rem; margin-top: 8px; }
-  .img-status.bad { color: var(--error); }
-  .gate { align-items: center; }
-  .gate-card { width: 100%; max-width: 420px; margin: 0 auto; }
-  .gate-card h2 { margin: 0 0 4px; }
+  .btn:hover { border-color: var(--haki); }
+  .btn.solid { background: var(--haki); border-color: var(--haki); color: #14122B; }
+  .btn.solid:hover { background: #CABEFF; }
+  .btn:focus-visible, .seg button:focus-visible, .flip:focus-visible { outline: 3px solid var(--haki-deep); outline-offset: 3px; }
+
+  /* ---------- App shell ---------- */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 20px 56px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { flex: none; }
+  .brand h1 { font: 700 1.55rem/1 var(--display); letter-spacing: -0.03em; margin: 0; }
+  .tagline { margin: 0 0 26px; color: var(--muted); max-width: 62ch; }
+
+  /* Direction switch */
+  .seg {
+    position: relative; display: grid; grid-template-columns: 1fr 1fr;
+    width: min(100%, 470px); margin-bottom: 22px; padding: 4px;
+    background: var(--deep); border: 1px solid var(--ink-line); border-radius: 999px;
+  }
+  .seg .slider {
+    position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+    background: var(--haki); border-radius: 999px; transition: transform 0.3s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .seg[data-mode="dec"] .slider { transform: translateX(100%); }
+  .seg button {
+    position: relative; z-index: 1; min-height: 46px; padding: 0 12px;
+    background: none; border: 0; border-radius: 999px; color: var(--muted);
+    font-weight: 500; font-size: 0.8rem; transition: color 0.2s;
+  }
+  .seg button[aria-pressed="true"] { color: #14122B; }
+
+  /* Two panes with a flip button on the seam */
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) 68px minmax(0, 1fr); align-items: stretch; }
+  .seam { display: flex; align-items: center; justify-content: center; }
+  .flip {
+    width: 52px; height: 52px; border-radius: 50%; padding: 0;
+    display: grid; place-items: center;
+    background: var(--haki); border: 4px solid var(--abyss); color: #14122B;
+    transition: transform 0.25s;
+  }
+  .flip:hover { transform: rotate(180deg); }
+
+  /* The pane material tells you which side is secret: pale glass = plain English, deep violet = secret. */
+  .pane {
+    --p-bg: var(--glass); --p-text: #10222B; --p-muted: #496660; --p-line: var(--glass-line);
+    --p-focus: #5B3FE0; --p-btn: #10222B; --p-btn-text: #E4EFEC;
+    display: flex; flex-direction: column; min-height: 400px; padding: 18px 20px 18px;
+    background: var(--p-bg); color: var(--p-text); border: 1px solid var(--p-line); border-radius: 24px;
+    transition: background-color 0.35s, color 0.35s, border-color 0.35s;
+  }
+  .pane[data-kind="secret"] {
+    --p-bg: var(--ink); --p-text: #EDE9FF; --p-muted: #A9A3D9; --p-line: var(--ink-line);
+    --p-focus: var(--haki); --p-btn: var(--haki); --p-btn-text: #14122B;
+  }
+  .pane:focus-within { box-shadow: 0 0 0 3px var(--p-focus); }
+  .pane.drop-active { outline: 3px dashed var(--p-focus); outline-offset: -9px; }
+  .pane-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; margin-bottom: 8px; }
+  .pane-title { font: 600 0.82rem/1.2 var(--display); letter-spacing: -0.005em; margin: 0; }
+  .pane-tools { display: flex; gap: 6px; }
+  .mini {
+    min-height: 36px; padding: 0 14px; border-radius: 999px;
+    background: transparent; color: var(--p-text); border: 1px solid var(--p-line);
+    font-weight: 500; font-size: 0.72rem;
+  }
+  .mini:hover:not(:disabled) { border-color: var(--p-text); }
+  .mini:focus-visible, .cta:focus-visible { outline: 3px solid var(--p-focus); outline-offset: 2px; }
+  .pane textarea {
+    flex: 1; width: 100%; min-height: 210px; resize: vertical;
+    background: transparent; color: inherit; border: 0; padding: 0; outline: none;
+    font: 400 1.08rem/1.6 var(--body);
+  }
+  .pane textarea::placeholder { color: var(--p-muted); opacity: 0.85; }
+  .pane textarea::selection { background: var(--beli); color: #10222B; }
+  .pane-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; min-height: 44px; }
+  .count { font-size: 0.86rem; color: var(--p-muted); font-variant-numeric: tabular-nums; }
+  .count.over { color: var(--coral); font-weight: 700; }
+  .count .live { margin-left: 10px; }
+  .cta {
+    min-height: 44px; padding: 0 26px; border-radius: 999px; border: 0;
+    background: var(--p-btn); color: var(--p-btn-text); font-weight: 600; font-size: 0.85rem;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .cta.done { background: var(--beli); color: #10222B; }
+
+  /* Image reading (inside the input pane) */
+  .imgbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 14px; border-top: 1px dashed var(--p-line); }
+  .drophint { color: var(--p-muted); font-size: 0.88rem; }
+  .progress { height: 6px; margin-top: 12px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, var(--p-text) 14%, transparent); }
+  .progress > span { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--p-focus); transition: width 0.2s; }
+  .progress.indet > span { width: 34%; animation: sweep 1.1s ease-in-out infinite; }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+  .img-result { display: flex; align-items: flex-start; gap: 12px; margin-top: 10px; }
+  .img-status { flex: 1; min-width: 0; min-height: 1.4em; font-size: 0.9rem; color: var(--p-muted); }
+  .img-status.bad { color: #B3261E; font-weight: 600; }
+  .pane[data-kind="secret"] .img-status.bad { color: var(--coral); }
+  .thumb { flex: none; display: block; height: 56px; width: 96px; object-fit: cover; object-position: top left; border-radius: 10px; border: 1px solid var(--p-line); }
+
+  .fine { margin: 26px 0 0; max-width: 78ch; color: var(--muted); font-size: 0.86rem; }
+
+  @media (max-width: 800px) {
+    .wrap { padding: 20px 16px 48px; }
+    .stage { grid-template-columns: minmax(0, 1fr); }
+    .seam { height: 60px; }
+    .flip svg { transform: rotate(90deg); }
+    .pane { min-height: 320px; border-radius: 22px; }
+    .brand h1 { font-size: 1.35rem; }
+  }
+  @media (max-width: 380px) {
+    .pane { padding: 16px 16px 16px; }
+    .pane-head { flex-wrap: wrap; }
+    .pane-title { font-size: 0.78rem; }
+    .mini { padding: 0 11px; }
+    .brand h1 { font-size: 1.2rem; }
+    .brand svg { width: 34px; height: 34px; }
+  }
+  @media (hover: none) { .drophint { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
 </style>
 </head>
 <body>
 
 <div id="gate" class="gate" role="dialog" aria-labelledby="gate-title" hidden>
-  <form id="gate-form" class="card gate-card" autocomplete="off">
+  <form id="gate-form" class="gate-card" autocomplete="off">
+    <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#B7A6FF"/><circle cx="12" cy="10" r="3.4" fill="#0E1020"/><path d="M10.4 12.2h3.2l1.2 6.3H9.2z" fill="#0E1020"/></svg>
     <h2 id="gate-title">Enter the passkey</h2>
-    <p class="hint">Only people with the passkey can use this. You'll only be asked once on this device.</p>
+    <p>Only people with the passkey can use Secretian. You only need to enter it once on this device.</p>
     <input id="passkey" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Passkey" placeholder="Passkey">
-    <div class="actions">
-      <button type="submit" class="primary">Unlock</button>
-      <button type="button" id="show">Show</button>
+    <div class="gate-actions">
+      <button type="submit" class="btn solid">Unlock</button>
+      <button type="button" class="btn" id="show">Show</button>
     </div>
     <div class="error" id="gate-error" role="alert"></div>
   </form>
 </div>
 
-<main id="app" hidden>
-  <div class="top">
-    <div>
+<main id="app" class="wrap" hidden>
+  <header class="bar">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#B7A6FF"/><circle cx="12" cy="10" r="3.4" fill="#0E1020"/><path d="M10.4 12.2h3.2l1.2 6.3H9.2z" fill="#0E1020"/></svg>
       <h1>Secretian</h1>
-      <p class="sub">Turn normal English into a secret language, and back again.</p>
     </div>
-    <button id="lock" type="button" title="Forget the passkey on this device">Lock</button>
+    <button id="lock" class="btn" type="button" title="Forget the passkey on this device">Lock</button>
+  </header>
+  <p class="tagline">Write a message in your group's secret language, or read one a friend sent you.</p>
+
+  <div class="seg" id="seg" data-mode="enc" role="group" aria-label="Direction">
+    <span class="slider" aria-hidden="true"></span>
+    <button id="m-enc" type="button" aria-pressed="true">Write a secret</button>
+    <button id="m-dec" type="button" aria-pressed="false">Read a secret</button>
   </div>
 
-  <div class="modes" role="group" aria-label="Direction">
-    <button id="m-enc" type="button" aria-pressed="true">English → Secret</button>
-    <button id="m-dec" type="button" aria-pressed="false">Secret → English</button>
+  <div class="stage">
+    <section class="pane" id="pane-in" data-kind="plain">
+      <div class="pane-head">
+        <label class="pane-title" for="in" id="in-label">Your message</label>
+        <div class="pane-tools">
+          <button id="paste" class="mini" type="button">Paste</button>
+          <button id="clear" class="mini" type="button">Clear</button>
+        </div>
+      </div>
+      <textarea id="in" spellcheck="false" placeholder="Type a message"></textarea>
+      <div class="pane-foot"><span class="count" id="in-count">0 words</span></div>
+      <div class="imgbar">
+        <button id="img-btn" class="mini" type="button">Read text from an image</button>
+        <span class="drophint">You can also drop or paste a screenshot.</span>
+        <input id="img-file" type="file" accept="image/*" hidden>
+      </div>
+      <div class="progress" id="progress" hidden><span id="progress-bar"></span></div>
+      <div class="img-result">
+        <img id="thumb" class="thumb" alt="The image being read" hidden>
+        <div class="img-status" id="img-status" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <div class="seam">
+      <button id="swap" class="flip" type="button" aria-label="Use the result as the new message and flip direction" title="Use the result as the new message and flip direction">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></svg>
+      </button>
+    </div>
+
+    <section class="pane" id="pane-out" data-kind="secret">
+      <div class="pane-head">
+        <label class="pane-title" for="out" id="out-label">Secret version</label>
+      </div>
+      <textarea id="out" readonly placeholder="Your secret message shows up here"></textarea>
+      <div class="pane-foot">
+        <span class="count"><span id="out-count">0 / 2000</span><span class="live" id="status" role="status" aria-live="polite"></span></span>
+        <button id="copy" class="cta" type="button">Copy</button>
+      </div>
+    </section>
   </div>
 
-  <section class="card">
-    <label for="in" id="in-label">Your message</label>
-    <textarea id="in" spellcheck="false" placeholder="Type or paste your message here, or add a screenshot"></textarea>
-    <div class="actions">
-      <button id="img-btn" type="button">Read text from an image</button>
-      <button id="clear" type="button">Clear</button>
-      <input id="img-file" type="file" accept="image/*" hidden>
-    </div>
-    <p class="hint">You can also drag an image onto this box, or paste a screenshot with Ctrl/Cmd + V.</p>
-    <div class="img-status" id="img-status" role="status" aria-live="polite"></div>
-    <img id="thumb" class="thumb" alt="The image being read" hidden>
-  </section>
-
-  <section class="card">
-    <label for="out" id="out-label">Secret version</label>
-    <textarea id="out" readonly></textarea>
-    <div class="actions">
-      <button id="copy" type="button">Copy</button>
-      <button id="swap" type="button">Use as input &amp; flip direction</button>
-    </div>
-    <div class="status" id="status" role="status" aria-live="polite"></div>
-  </section>
-
-  <footer>
-    Every word in the dictionary (plus lots of gaming words and names) is swapped for a different word. Anything not in the word list, like numbers or very new slang, is left unchanged. Everything runs in your browser and your messages are never sent anywhere. Reading an image also happens on your device (the image is never uploaded), but the first time you use it, the page downloads a free text-reading tool of about 8 MB.
-  </footer>
+  <p class="fine" id="fine">
+    Your messages stay in your browser. Words that are not in the word list, like numbers or brand-new slang, stay as they are. Reading an image also happens on your device; the first time, the page downloads an 8 MB text-reading tool.
+  </p>
 </main>
 
 <script>
@@ -143,6 +270,7 @@
 const WORDS = "/*WORDS*/".split(" ");
 const GATE_HASH = "/*GATE*/";
 const STORE_KEY = "sw_passkey";
+const DISCORD_LIMIT = 2000;
 
 const $ = (id) => document.getElementById(id);
 const inEl = $("in"), outEl = $("out"), statusEl = $("status");
@@ -164,6 +292,23 @@ function getMaps(pass) {
   return cache.maps;
 }
 
+function wordCount(s) { const m = s.match(/[A-Za-z]+/g); return m ? m.length : 0; }
+function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+function updateCounts() {
+  $("in-count").textContent = plural(wordCount(inEl.value), "word", "words");
+  const oc = $("out-count");
+  if (mode === "enc") {
+    const len = outEl.value.length;
+    oc.textContent = len + " / " + DISCORD_LIMIT + " for Discord";
+    oc.title = "Discord allows up to 2000 characters in one message";
+    oc.parentElement.classList.toggle("over", len > DISCORD_LIMIT);
+  } else {
+    oc.textContent = plural(wordCount(outEl.value), "word", "words");
+    oc.parentElement.classList.remove("over");
+  }
+}
+
 function run() {
   if (!passkey) return;
   statusEl.textContent = "Working…";
@@ -173,10 +318,12 @@ function run() {
     const maps = getMaps(passkey);
     outEl.value = SecretWords.translate(inEl.value, mode === "enc" ? maps.enc : maps.dec);
     statusEl.textContent = "";
+    updateCounts();
   }, 20);
 }
 
 function schedule() {
+  updateCounts();
   clearTimeout(timer);
   timer = setTimeout(run, 250);
 }
@@ -185,8 +332,15 @@ function setMode(m) {
   mode = m;
   $("m-enc").setAttribute("aria-pressed", m === "enc");
   $("m-dec").setAttribute("aria-pressed", m === "dec");
+  $("seg").dataset.mode = m;
+  // The secret side is always the dark violet pane; the plain English side is pale glass.
+  $("pane-in").dataset.kind = m === "enc" ? "plain" : "secret";
+  $("pane-out").dataset.kind = m === "enc" ? "secret" : "plain";
   $("in-label").textContent = m === "enc" ? "Your message" : "Secret message";
   $("out-label").textContent = m === "enc" ? "Secret version" : "Decoded message";
+  inEl.placeholder = m === "enc" ? "Type a message" : "Paste the secret message here";
+  outEl.placeholder = m === "enc" ? "Your secret message shows up here" : "The decoded message shows up here";
+  updateCounts();
   run();
 }
 
@@ -203,6 +357,7 @@ function showGate() {
   inEl.value = "";
   outEl.value = "";
   clearImage();
+  updateCounts();
   $("app").hidden = true;
   $("gate").hidden = false;
   $("passkey").value = "";
@@ -219,7 +374,7 @@ $("gate-form").addEventListener("submit", function (e) {
       writeStored(attempt);
       showApp(attempt);
     } else {
-      $("gate-error").textContent = "Wrong passkey (you typed " + attempt.length + " characters). Tap Show to check spelling, all lowercase, no spaces.";
+      $("gate-error").textContent = "Wrong passkey (you typed " + attempt.length + " characters). Tap Show to check the spelling: all lowercase, no spaces.";
       $("passkey").select();
     }
   }, 20);
@@ -239,18 +394,40 @@ $("lock").addEventListener("click", function () {
 inEl.addEventListener("input", schedule);
 $("m-enc").addEventListener("click", () => setMode("enc"));
 $("m-dec").addEventListener("click", () => setMode("dec"));
+
+let copyTimer = null;
 $("copy").addEventListener("click", async function () {
+  const btn = this;
+  if (!outEl.value) { statusEl.textContent = "Nothing to copy yet."; return; }
   try {
     await navigator.clipboard.writeText(outEl.value);
-    statusEl.textContent = "Copied!";
+    btn.textContent = "Copied";
+    btn.classList.add("done");
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1600);
   } catch (e) {
     outEl.select();
     statusEl.textContent = "Press Ctrl/Cmd + C to copy.";
   }
 });
+
 $("swap").addEventListener("click", function () {
   inEl.value = outEl.value;
   setMode(mode === "enc" ? "dec" : "enc");
+});
+
+$("paste").addEventListener("click", async function () {
+  try {
+    const t = await navigator.clipboard.readText();
+    if (!t) { say("Your clipboard has no text in it."); return; }
+    inEl.value = t;
+    say("");
+    schedule();
+    inEl.focus();
+  } catch (e) {
+    say("Your browser blocked the paste button. Click in the box and press Ctrl/Cmd + V instead.", true);
+    inEl.focus();
+  }
 });
 
 // ---------- Reading text from images (runs on the device; the image is never uploaded) ----------
@@ -269,6 +446,14 @@ let thumbUrl = null;
 function say(msg, bad) {
   imgStatus.textContent = msg;
   imgStatus.classList.toggle("bad", !!bad);
+}
+
+// level: false hides the bar, null shows a moving bar (time unknown), a number from 0 to 1 fills it.
+function setProgress(level) {
+  const bar = $("progress");
+  bar.hidden = level === false;
+  bar.classList.toggle("indet", level === null);
+  $("progress-bar").style.width = typeof level === "number" ? Math.round(level * 100) + "%" : "";
 }
 
 function loadScript(src) {
@@ -334,17 +519,19 @@ function clearImage() {
   if (thumbUrl) { URL.revokeObjectURL(thumbUrl); thumbUrl = null; }
   $("thumb").hidden = true;
   $("thumb").removeAttribute("src");
+  setProgress(false);
   say("");
 }
 
 async function readImage(file) {
   if (ocrBusy) return;
-  if (!file || !/^image\//.test(file.type)) { say("Please choose an image file (PNG, JPG, screenshot).", true); return; }
+  if (!file || !/^image\//.test(file.type)) { say("Please choose an image file (PNG, JPG or a screenshot).", true); return; }
   ocrBusy = true;
   $("img-btn").disabled = true;
   try {
     clearImage();
     say("Opening image…");
+    setProgress(null);
     const loaded = await loadImage(file);
     thumbUrl = loaded.url;
     $("thumb").src = loaded.url;
@@ -352,15 +539,20 @@ async function readImage(file) {
     const canvas = prepareCanvas(loaded.img);
 
     ocrProgress = function (m) {
-      if (m.status === "recognizing text") say("Reading text… " + Math.round((m.progress || 0) * 100) + "%");
-      else if (!ocrWorker) say("Getting the image reader ready (first time only, about 8 MB)…");
+      if (m.status === "recognizing text") {
+        setProgress(m.progress || 0);
+        say("Reading text… " + Math.round((m.progress || 0) * 100) + "%");
+      } else if (!ocrWorker) {
+        setProgress(null);
+        say("Getting the image reader ready (first time only, about 8 MB)…");
+      }
     };
     say("Getting the image reader ready (first time only, about 8 MB)…");
     const worker = await getOcrWorker();
     const result = await worker.recognize(canvas);
     let text = (result.data.text || "").replace(/\r/g, "").trim();
 
-    if (!text) { say("No text found in that image. Try a sharper or larger screenshot.", true); return; }
+    if (!text) { setProgress(false); say("No text found in that image. Try a sharper or larger screenshot.", true); return; }
 
     let note = "";
     if (mode === "dec" && passkey) {
@@ -369,9 +561,12 @@ async function readImage(file) {
       if (fixedRes.fixed) note = " Fixed " + fixedRes.fixed + " misread word" + (fixedRes.fixed === 1 ? "" : "s") + ".";
     }
     inEl.value = text;
+    updateCounts();
     run();
+    setProgress(false);
     say("Done." + note + " Check the text above and fix any mistakes, because image reading is not perfect.");
   } catch (e) {
+    setProgress(false);
     say(e && e.message ? e.message : "Something went wrong reading that image.", true);
   } finally {
     ocrBusy = false;
@@ -394,6 +589,7 @@ $("clear").addEventListener("click", function () {
   inEl.value = "";
   outEl.value = "";
   clearImage();
+  updateCounts();
   inEl.focus();
 });
 document.addEventListener("paste", function (e) {
@@ -401,7 +597,7 @@ document.addEventListener("paste", function (e) {
   const f = firstImage(e.clipboardData && e.clipboardData.files);
   if (f) { e.preventDefault(); readImage(f); }
 });
-const dropZone = inEl.closest(".card");
+const dropZone = $("pane-in");
 ["dragenter", "dragover"].forEach(function (t) {
   dropZone.addEventListener(t, function (e) { e.preventDefault(); dropZone.classList.add("drop-active"); });
 });
