@@ -108,6 +108,35 @@ const SecretWords = (function () {
     });
   }
 
+  // Repair text that was read from an image. Image readers often get one letter wrong
+  // in long, unusual words. For any word not in the map, try every word that is one
+  // typo away (a letter changed, missing, extra, or two letters swapped). If exactly
+  // one of them is a real secret word, use it; if it is unclear, leave the word alone.
+  function fuzzyFix(text, map) {
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    let fixed = 0;
+    const out = text.replace(/[A-Za-z]+/g, function (tok) {
+      const w = tok.toLowerCase();
+      if (w.length < 4 || map.has(w)) return tok;
+      const found = new Set();
+      const test = function (c) { if (map.has(c)) found.add(c); };
+      for (let i = 0; i < w.length; i++) {
+        test(w.slice(0, i) + w.slice(i + 1));
+        if (i + 1 < w.length) test(w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2));
+        for (let k = 0; k < 26; k++) {
+          test(w.slice(0, i) + letters[k] + w.slice(i + 1));
+          test(w.slice(0, i) + letters[k] + w.slice(i));
+        }
+      }
+      for (let k = 0; k < 26; k++) test(w + letters[k]);
+      found.delete(w);
+      if (found.size !== 1) return tok;
+      fixed++;
+      return applyCase(tok, found.values().next().value);
+    });
+    return { text: out, fixed: fixed };
+  }
+
   // One-way fingerprint of a passkey, used to check it without storing it in the page.
   function verifier(pass) {
     let h = sha256(new TextEncoder().encode("gate-v1:" + pass));
@@ -115,7 +144,7 @@ const SecretWords = (function () {
     return Array.from(h, function (b) { return b.toString(16).padStart(2, "0"); }).join("");
   }
 
-  return { sha256: sha256, buildMaps: buildMaps, translate: translate, verifier: verifier };
+  return { sha256: sha256, buildMaps: buildMaps, translate: translate, verifier: verifier, fuzzyFix: fuzzyFix };
 })();
 
 if (typeof module !== "undefined") module.exports = SecretWords;
